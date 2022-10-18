@@ -45,7 +45,7 @@ private:
     void timerEvent(QTimerEvent * event);
     std::vector<Armor> ArmorList;
 
-    KF_CV_1 kalman;
+    //KF_CV_1 kalman;
     KF_CA_1 kfCa1;
 
     Ui::MainWindow *ui;

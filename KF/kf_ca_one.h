@@ -16,7 +16,7 @@ public:
     void predict(double t);
     // 状态更新
     void update(Eigen::MatrixXf z, double t);
-
+    Eigen::MatrixXf get_x(){return   x_;}
 public:
     Eigen::MatrixXf x_;
 

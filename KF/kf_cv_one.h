@@ -22,7 +22,6 @@ public:
 
 
     Eigen::MatrixXf get_x(){return   x_;}
-    bool is_set_x = false;                     // 判断是否赋初值
 public:
     Eigen::MatrixXf x_;
 

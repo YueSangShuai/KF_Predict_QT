@@ -94,22 +94,31 @@ void MainWindow::Show_Plot(QCustomPlot *customPlot, double num)
 {
     static double cnt=0;
     cnt++;
-//    double v=0.78*sin(1.884*cnt)+1.31;
-//
-//    positon=3*v;
-//
-//    kalman.predict(1);
+
+    double Ts=0.1;
+
+    double v=0.785*sin(1.884*Ts*cnt)+1.305;
+    positon=positon+Ts*v;
+
+//    kalman.predict(Ts);
 //    Eigen::MatrixXf Z_in=Eigen::MatrixXf(1,1);
 //    Z_in<<positon;
-//    kalman.update(Z_in,1);
+//    kalman.update(Z_in,Ts);
 
+//    positon=3*(Ts*cnt)*(Ts*cnt);
 
-
-//    // 给曲线添加数据
-    pGraph1_1->addData(cnt, v);
-    pGraph1_2->addData(cnt, kalman.get_x()(1 ));
-
+//    kfCa1.predict(Ts);
+//    Eigen::MatrixXf Z_in=Eigen::MatrixXf(1,1);
+//    Z_in<<positon;
+//    kfCa1.update(Z_in,Ts);
 //
+//    // 给曲线添加数据
+//    pGraph1_1->addData(cnt, v/Ts);
+//    pGraph1_2->addData(cnt, kfCa1.get_x()(2));
+
+
+
+
 //    pGraph1_3->addData(cnt, num/cnt);
 //    pGraph1_4->addData(cnt, kalman.get_x()(1));
 

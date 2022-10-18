@@ -5,6 +5,7 @@
 #include <queue>
 #include "qcustomplot.h"
 #include "KF/kf_cv_one.h"
+#include "KF/kf_ca_one.h"
 
 struct Armor{
     int time=0;
@@ -45,6 +46,8 @@ private:
     std::vector<Armor> ArmorList;
 
     KF_CV_1 kalman;
+    KF_CA_1 kfCa1;
+
     Ui::MainWindow *ui;
 
     // 绘图控件的指针

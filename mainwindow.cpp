@@ -76,14 +76,13 @@ void MainWindow::TimeData_Update(void)
     // 生成坐标数据
     static float f=0;
 
-    f+=1;
-    //double v=0.78*sin(1.884*f)+1.31;
-    positon=3*f;
+    f++;
 
-    kalman.predict(1);
-    Eigen::MatrixXf Z_in=Eigen::MatrixXf(1,1);
-    Z_in<<positon;
-    kalman.update(Z_in,1);
+
+//    kfCa1.predict(1);
+//    Eigen::MatrixXf Z_in=Eigen::MatrixXf(1,1);
+//    Z_in<<positon;
+//    kfCa1.update(Z_in,1);
 
     //qDebug() << sin(f)*100;
     // 将坐标数据，传递给曲线
@@ -95,13 +94,24 @@ void MainWindow::Show_Plot(QCustomPlot *customPlot, double num)
 {
     static double cnt=0;
     cnt++;
+//    double v=0.78*sin(1.884*cnt)+1.31;
+//
+//    positon=3*v;
+//
+//    kalman.predict(1);
+//    Eigen::MatrixXf Z_in=Eigen::MatrixXf(1,1);
+//    Z_in<<positon;
+//    kalman.update(Z_in,1);
+
+
 
 //    // 给曲线添加数据
-    pGraph1_1->addData(cnt, num);
-    pGraph1_2->addData(cnt, kalman.get_x()(0));
+    pGraph1_1->addData(cnt, v);
+    pGraph1_2->addData(cnt, kalman.get_x()(1 ));
 
-    pGraph1_3->addData(cnt, 3);
-    pGraph1_4->addData(cnt, kalman.get_x()(1));
+//
+//    pGraph1_3->addData(cnt, num/cnt);
+//    pGraph1_4->addData(cnt, kalman.get_x()(1));
 
     // 设置x坐标轴显示范围，使其自适应缩放x轴，x轴最大显示1000个点
     customPlot->xAxis->setRange((pGraph1_1->dataCount()>1000)?(pGraph1_1->dataCount()-1000):0, pGraph1_1->dataCount());

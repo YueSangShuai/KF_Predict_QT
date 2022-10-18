@@ -21,6 +21,7 @@ KF_CV_1::KF_CV_1() {
 
     Eigen::MatrixXf R_in=Eigen::MatrixXf::Ones(1,1);
     R=R_in*10;
+
 }
 
 void KF_CV_1::update(Eigen::MatrixXf z, double t) {
@@ -29,7 +30,7 @@ void KF_CV_1::update(Eigen::MatrixXf z, double t) {
 
     x_=x_pre+K*(z-H*x_pre);
 
-    Eigen::MatrixXf I=Eigen::MatrixXf::Ones(2,2);
+    Eigen::MatrixXf I=Eigen::MatrixXf::Identity(2,2);
     P=(I-K*H)*P_pre;
 
 }
@@ -38,6 +39,7 @@ void KF_CV_1::predict(double t) {
     Eigen::MatrixXf F_in=Eigen::MatrixXf::Identity(2,2);
     F_in<<1,t,0,1;
     F=F_in;
+
     x_pre=F*x_;
 
     P_pre=F*P*F.transpose()+Q;

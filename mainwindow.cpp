@@ -3,6 +3,7 @@
 #include "opencv2/core.hpp"
 
 bool flag= false;
+double positon=0;
 MainWindow::MainWindow(QWidget *parent)
         : QMainWindow(parent)
         , ui(new Ui::MainWindow)
@@ -40,9 +41,9 @@ void MainWindow::QPlot_init(QCustomPlot *customPlot)
 
     // 设置曲线颜色
     pGraph1_1->setPen(QPen(Qt::red));
-    pGraph1_2->setPen(QPen(Qt::black));
+    pGraph1_2->setPen(QPen(Qt::yellow));
 
-    pGraph1_1->setPen(QPen(Qt::darkGreen));
+    pGraph1_1->setPen(QPen(Qt::green));
     pGraph1_2->setPen(QPen(Qt::blue));
     // 设置坐标轴名称
     customPlot->xAxis->setLabel("X");
@@ -73,41 +74,33 @@ void MainWindow::timerEvent ( QTimerEvent * event ){
 void MainWindow::TimeData_Update(void)
 {
     // 生成坐标数据
-    static float f;
-    if(f==30){
-        flag=true;
-    }else if(f==0){
-        flag= false;
-    }
+    static float f=0;
 
-    if(!flag){
-        f += 1;
-    }else{
-        f-=1;
-    }
-
+    f+=1;
+    //double v=0.78*sin(1.884*f)+1.31;
+    positon=3*f;
 
     kalman.predict(1);
     Eigen::MatrixXf Z_in=Eigen::MatrixXf(1,1);
-    Z_in<<sin(f);
+    Z_in<<positon;
     kalman.update(Z_in,1);
 
     //qDebug() << sin(f)*100;
     // 将坐标数据，传递给曲线
-    Show_Plot(pPlot1, sin(f));
+    Show_Plot(pPlot1, positon);
 }
 
 // 曲线更新绘图
 void MainWindow::Show_Plot(QCustomPlot *customPlot, double num)
 {
-    static double cnt;
+    static double cnt=0;
     cnt++;
 
-    // 给曲线添加数据
+//    // 给曲线添加数据
     pGraph1_1->addData(cnt, num);
     pGraph1_2->addData(cnt, kalman.get_x()(0));
 
-    pGraph1_3->addData(cnt, num/0.1);
+    pGraph1_3->addData(cnt, 3);
     pGraph1_4->addData(cnt, kalman.get_x()(1));
 
     // 设置x坐标轴显示范围，使其自适应缩放x轴，x轴最大显示1000个点

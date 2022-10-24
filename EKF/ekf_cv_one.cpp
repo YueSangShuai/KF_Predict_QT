@@ -4,12 +4,6 @@
 
 #include "ekf_cv_one.h"
 
-////能量机关位置方程
-//template<typename T>
-//T f(const T &x, const T &y,const T &z) {
-//    return x +;
-//}
-
 EKF_CV_ONE::EKF_CV_ONE() {
     Eigen::MatrixXf x_in=Eigen::MatrixXf::Ones(3,1);
     x_=x_in;
@@ -31,13 +25,13 @@ EKF_CV_ONE::EKF_CV_ONE() {
 }
 
 void EKF_CV_ONE::predict(double t) {
-    x_pre(0)=x_(0)+t*sin(x_(1));
+    x_pre(0)=x_(0)+t*(0.785*sin(x_(1))+1.305);
     x_pre(1)=x_(1)+t*x_(2);
     x_pre(2)=x_pre(2);
 
 
     Eigen::MatrixXf F_in=Eigen::MatrixXf::Identity(3,3);
-    F_in<<1,cos(x_(1))*t,t*t*cos(x_(2)),
+    F_in<<  1, 0.785*cos(x_(1))*t, 0.785*t*t*cos(x_(2)*t),
             0,1,t,
             0,0,1;
     JF=F_in;
@@ -47,7 +41,7 @@ void EKF_CV_ONE::predict(double t) {
 void EKF_CV_ONE::update(Eigen::MatrixXf z, double t) {
 
     Eigen::MatrixXf H_in=Eigen::MatrixXf::Zero(1,3);
-    H_in<<1,cos(x_(1))*t,t*t*cos(x_(2));
+    H_in<<1,0,0;
 
     JH=H_in;
 
@@ -58,5 +52,3 @@ void EKF_CV_ONE::update(Eigen::MatrixXf z, double t) {
     Eigen::MatrixXf I=Eigen::MatrixXf::Identity(3,3);
     P=(I-K*JH)*P_pre;
 }
-
-

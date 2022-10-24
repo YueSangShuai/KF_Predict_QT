@@ -1,7 +1,3 @@
-//
-// Created by yuesang on 22-10-18.
-//
-
 #ifndef KF_PREDICT_EKF_CV_ONE_H
 #define KF_PREDICT_EKF_CV_ONE_H
 #include <ceres/ceres.h>
@@ -48,7 +44,5 @@ public:
 
     Eigen::MatrixXf K;                          // 卡尔曼增益
 };
-
-
 
 #endif //KF_PREDICT_EKF_CV_ONE_H

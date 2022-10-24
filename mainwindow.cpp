@@ -97,8 +97,7 @@ void MainWindow::Show_Plot(QCustomPlot *customPlot, double num)
 
     double Ts=0.1;
 
-    double v=sin(Ts*cnt);
-    positon=positon+Ts*v;
+
 //TODO：卡尔曼滤波CV模型
 //    kalman.predict(Ts);
 //    Eigen::MatrixXf Z_in=Eigen::MatrixXf(1,1);
@@ -114,13 +113,18 @@ void MainWindow::Show_Plot(QCustomPlot *customPlot, double num)
 //    kfCa1.update(Z_in,Ts);
 
 //TODO：扩展卡尔曼滤波CV模型
+    double v=0.785*sin(1.884*Ts*cnt)+1.305;
+    positon=positon+Ts*v;
+
+
     ekfCvOne.predict(Ts);
     Eigen::MatrixXf Z_in=Eigen::MatrixXf(1,1);
     Z_in<<positon;
     ekfCvOne.update(Z_in,Ts);
 //    // 给曲线添加数据
     pGraph1_1->addData(cnt, v);
-    pGraph1_2->addData(cnt, sin(ekfCvOne.get_x()(1)));
+    pGraph1_2->addData(cnt, 0.785*sin(ekfCvOne.get_x()(1))+1.305);
+
 
 
 //    pGraph1_3->addData(cnt, num/cnt);

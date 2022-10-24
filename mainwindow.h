@@ -6,6 +6,7 @@
 #include "qcustomplot.h"
 #include "KF/kf_cv_one.h"
 #include "KF/kf_ca_one.h"
+#include "EKF/ekf_cv_one.h"
 
 struct Armor{
     int time=0;
@@ -45,8 +46,9 @@ private:
     void timerEvent(QTimerEvent * event);
     std::vector<Armor> ArmorList;
 
-    //KF_CV_1 kalman;
+    KF_CV_1 kalman;
     KF_CA_1 kfCa1;
+    EKF_CV_ONE ekfCvOne;
 
     Ui::MainWindow *ui;
 

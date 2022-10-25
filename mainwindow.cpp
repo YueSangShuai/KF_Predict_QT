@@ -106,7 +106,7 @@ void MainWindow::Show_Plot(QCustomPlot *customPlot, double num)
 
 
 //TODO：卡尔曼滤波CA模型
-//    positon=3*(Ts*cnt)*(Ts*cnt);
+    //positon=3*(Ts*cnt)*(Ts*cnt);
 //    kfCa1.predict(Ts);
 //    Eigen::MatrixXf Z_in=Eigen::MatrixXf(1,1);
 //    Z_in<<positon;
@@ -123,7 +123,7 @@ void MainWindow::Show_Plot(QCustomPlot *customPlot, double num)
     ekfCvOne.update(Z_in,Ts);
 //    // 给曲线添加数据
     pGraph1_1->addData(cnt, v);
-    pGraph1_2->addData(cnt, 0.785*sin(ekfCvOne.get_x()(1))+1.305);
+    pGraph1_2->addData(cnt, kfCa1.get_x()(1));
 
 
 

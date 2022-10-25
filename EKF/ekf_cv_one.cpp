@@ -18,10 +18,10 @@ EKF_CV_ONE::EKF_CV_ONE() {
     P_pre=P_in_pre;
 
     Eigen::MatrixXf Q_in = Eigen::MatrixXf::Identity(3,3);
-    Q=Q_in*0.01;
+    Q=Q_in*0.1;
 
     Eigen::MatrixXf R_in=Eigen::MatrixXf::Ones(1,1);
-    R=R_in*10;
+    R=R_in*1000;
 }
 
 void EKF_CV_ONE::predict(double t) {
@@ -30,12 +30,12 @@ void EKF_CV_ONE::predict(double t) {
     x_pre(2)=x_pre(2);
 
 
-    Eigen::MatrixXf F_in=Eigen::MatrixXf::Identity(3,3);
-    F_in<<  1, 0.785*cos(x_(1))*t, 0.785*t*t*cos(x_(2)*t),
+    Eigen::MatrixXf F_in=Eigen::MatrixXf::Zero(3,3);
+    F_in<<  1, 0.785*cos(x_(1))*t,0.785*cos(x_(1)*t)*t*t,
             0,1,t,
             0,0,1;
     JF=F_in;
-    P_pre=JF*P*JF.transpose()+Q;
+    P_pre=(JF)*P*(JF).transpose()+Q;
 }
 
 void EKF_CV_ONE::update(Eigen::MatrixXf z, double t) {

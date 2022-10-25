@@ -26,11 +26,11 @@ KF_CA_1::KF_CA_1() {
 
 
     Eigen::MatrixXf Q_in = Eigen::MatrixXf::Identity(3,3);
-    Q=Q_in*0.01;
+    Q=Q_in*1;
 
 
     Eigen::MatrixXf R_in=Eigen::MatrixXf::Ones(1,1);
-    R=R_in*10;
+    R=R_in*1;
 
 
 }

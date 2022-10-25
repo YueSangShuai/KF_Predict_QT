@@ -18,7 +18,7 @@ EKF_CV_ONE::EKF_CV_ONE() {
     P_pre=P_in_pre;
 
     Eigen::MatrixXf Q_in = Eigen::MatrixXf::Identity(3,3);
-    Q=Q_in*100;
+    Q=Q_in*1;
 
     Eigen::MatrixXf R_in=Eigen::MatrixXf::Ones(1,1);
     R=R_in*1;

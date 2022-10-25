@@ -21,8 +21,7 @@ add_executable(KF_Predict
         mainwindow.ui
         qcustomplot.h
         qcustomplot.cpp
-        KF/kf.cpp
-        KF/kf.h KF/kf_cv_one.cpp KF/kf_cv_one.h KF/kf_ca_one.cpp KF/kf_ca_one.h EKF/ekf_cv_one.cpp EKF/ekf_cv_one.h KF/kf_cv_three.cpp KF/kf_cv_three.h predict/Buffpredict.cpp predict/Buffpredict.h)
+        KF/kf_cv_one.cpp KF/kf_cv_one.h KF/kf_ca_one.cpp KF/kf_ca_one.h EKF/ekf_cv_one.cpp EKF/ekf_cv_one.h KF/kf_cv_three.cpp KF/kf_cv_three.h predict/Buffpredict.cpp predict/Buffpredict.h)
 
 target_link_libraries(KF_Predict
         Qt5::Core

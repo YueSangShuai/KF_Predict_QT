@@ -40,13 +40,9 @@ private:
 
     double params[4];//待拟合的参数
     std::deque<Buff> history_buff;//大符队列
-    const int delay=200;       //延迟
-    const int max_timespan=90000; //最大时间 超过这个时间则重置队列
-    const int window_size = 2;                                              //滑动窗口大小
 public:
     BuffPredictor();
     ~BuffPredictor();
-    double shiftWindowFilter(int start_idx);
     bool predict(double angel,double speed,int timestamp);
     bool is_params_confirmed;
     int buff_statue;//大小符模式 1为小符 2为大符

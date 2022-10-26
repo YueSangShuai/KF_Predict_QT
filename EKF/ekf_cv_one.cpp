@@ -31,7 +31,7 @@ void EKF_CV_ONE::predict(double t) {
 
 
     Eigen::MatrixXf F_in=Eigen::MatrixXf::Zero(3,3);
-    F_in<<  1, 0.785*cos(x_(1))*t,0,
+    F_in<<  1, 0.785*cos(x_(1))*t,0.785*cos(x_(1)*t)*t*t,
             0,1,t,
             0,0,1;
 

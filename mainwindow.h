@@ -6,7 +6,9 @@
 #include "qcustomplot.h"
 #include "KF/kf_cv_one.h"
 #include "KF/kf_ca_one.h"
+#include "KF/kf_cv_three.h"
 #include "EKF/ekf_cv_one.h"
+#include "EKF/ekf_cv_aw.h"
 
 struct Armor{
     int time=0;
@@ -48,7 +50,9 @@ private:
 
     KF_CV_1 kalman;
     KF_CA_1 kfCa1;
+    KF_CV_3 kfCv3;
     EKF_CV_ONE ekfCvOne;
+    EKF_CV_AW ekfCvAw;
 
     Ui::MainWindow *ui;
 

@@ -32,10 +32,10 @@ void EKF_CV_AW::predict(double t) {
 
 
     Eigen::MatrixXf F_in=Eigen::MatrixXf::Zero(4,4);
-    F_in<<  1,
+    F_in<< 1,
     x_(3)*cos(x_(1))*t,
     x_(3)*cos(x_(1)*t)*t*t,
-    sin(x_(1)*t)*t,
+    sin(x_(1))*t,
             0,1,t,0,
             0,0,1,0,
             0,0,0,1;

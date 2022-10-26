@@ -158,17 +158,18 @@ void MainWindow::Show_Plot(QCustomPlot *customPlot, double num)
 //    pGraph1_2->addData(cnt, ekfCvAw.get_x()(3)*sin(ekfCvAw.get_x()(1))+1.305);
 
 //TODO:EKF观测三角函数中的a,w,b
-//    double v=0.6*sin(1.884*Ts*cnt)+1;
-//    positon=positon+Ts*v;
-//    ekfCvAwb.predict(Ts);
-//    Eigen::MatrixXf Z_in=Eigen::MatrixXf(1,1);
-//    Z_in<<positon;
-//    ekfCvAwb.update(Z_in,Ts);
+    double v=0.6*sin(2*Ts*cnt)+1;
+    positon=positon+Ts*v;
+    ekfCvAwb.predict(Ts);
+    Eigen::MatrixXf Z_in=Eigen::MatrixXf(1,1);
+    Z_in<<positon;
+    ekfCvAwb.update(Z_in,Ts);
 
+    pGraph1_1->addData(cnt, v);
+    pGraph1_2->addData(cnt, ekfCvAwb.get_x()(3)*sin(ekfCvAwb.get_x()(1))+ekfCvAwb.get_x()(4));
 
-
-//    pGraph1_3->addData(cnt, vy);
-//    pGraph1_4->addData(cnt, kfCv3.get_x()(3));
+//    pGraph1_3->addData(cnt, v);
+//    pGraph1_4->addData(cnt, ekfCvAwb.get_x()(3)*sin(ekfCvAwb.get_x()(1))+ekfCvAwb.get_x()(4));
 
     // 设置x坐标轴显示范围，使其自适应缩放x轴，x轴最大显示1000个点
     customPlot->xAxis->setRange((pGraph1_1->dataCount()>1000)?(pGraph1_1->dataCount()-1000):0, pGraph1_1->dataCount());

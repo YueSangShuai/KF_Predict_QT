@@ -42,7 +42,7 @@ void EKF_CV_AWB::predict(double t) {
     F_in<<  1,
     x_(3)*cos(x_(1))*t,
     x_(3)*cos(x_(1)*t)*t*t,
-    cos(x_(1)*t)*t,
+    sin(x_(1))*t,
     t,
             0,1,t,0,0,
             0,0,1,0,0,

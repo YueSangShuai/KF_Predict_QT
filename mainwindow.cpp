@@ -99,7 +99,7 @@ void MainWindow::Show_Plot(QCustomPlot *customPlot, double num)
     static double cnt=0;
     cnt++;
 
-    double Ts=0.1;
+    double Ts=0.01;
 
 
 //TODO：卡尔曼滤波CV模型
@@ -109,12 +109,15 @@ void MainWindow::Show_Plot(QCustomPlot *customPlot, double num)
 //    kalman.update(Z_in,Ts);
 
 
+
 //TODO：卡尔曼滤波CA模型
     //positon=3*(Ts*cnt)*(Ts*cnt);
 //    kfCa1.predict(Ts);
 //    Eigen::MatrixXf Z_in=Eigen::MatrixXf(1,1);
 //    Z_in<<positon;
 //    kfCa1.update(Z_in,Ts);
+
+
 
 //TODO：扩展卡尔曼滤波CV模型
 //    double v=0.785*sin(1.884*Ts*cnt)+1.305;
@@ -124,6 +127,8 @@ void MainWindow::Show_Plot(QCustomPlot *customPlot, double num)
 //    Eigen::MatrixXf Z_in=Eigen::MatrixXf(1,1);
 //    Z_in<<positon;
 //    ekfCvOne.update(Z_in,Ts);
+
+
 
 //TODO：哈工程卡尔曼滤波CV模型
 //    double vx=3,vy=100,vz=9;
@@ -136,18 +141,27 @@ void MainWindow::Show_Plot(QCustomPlot *customPlot, double num)
 //
 //    kfCv3.update(Z_in);
 
+
+
 //TODO:EKF观测三角函数中的a和w
-    double v=0.785*sin(1.884*Ts*cnt)+1.305;
+//    double v=0.785*sin(1.884*Ts*cnt)+1.305;
+//    positon=positon+Ts*v;
+//    ekfCvAw.predict(Ts);
+//    Eigen::MatrixXf Z_in=Eigen::MatrixXf(1,1);
+//    Z_in<<positon;
+//    ekfCvAw.update(Z_in,Ts);
+
+//TODO:EKF观测三角函数中的a,w,b
+    double v=1.4*sin(1.884*Ts*cnt)+1;
     positon=positon+Ts*v;
-    ekfCvAw.predict(Ts);
+    ekfCvAwb.predict(Ts);
     Eigen::MatrixXf Z_in=Eigen::MatrixXf(1,1);
     Z_in<<positon;
-    ekfCvAw.update(Z_in,Ts);
+    ekfCvAwb.update(Z_in,Ts);
 
    // 给曲线添加数据
     pGraph1_1->addData(cnt, v);
-    pGraph1_2->addData(cnt, ekfCvAw.get_x()(3)*sin(ekfCvAw.get_x()(1))+1.305);
-
+    pGraph1_2->addData(cnt, ekfCvAwb.get_x()(3)*sin(ekfCvAwb.get_x()(1))+ekfCvAwb.get_x()(4));
 
 //    pGraph1_3->addData(cnt, vy);
 //    pGraph1_4->addData(cnt, kfCv3.get_x()(3));

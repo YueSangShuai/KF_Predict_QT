@@ -158,7 +158,7 @@ void MainWindow::Show_Plot(QCustomPlot *customPlot, double num)
 //    pGraph1_2->addData(cnt, ekfCvAw.get_x()(3)*sin(ekfCvAw.get_x()(1))+1.305);
 
 //TODO:EKF观测三角函数中的a,w,b
-    double v=3*sin(2*Ts*cnt)+1;
+    double v=3*sin(2*Ts*cnt)+2;
     positon=positon+Ts*v;
     ekfCvAwb.predict(Ts);
     Eigen::MatrixXf Z_in=Eigen::MatrixXf(1,1);

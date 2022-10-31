@@ -8,17 +8,19 @@
 #include <ceres/ceres.h>
 #include <Eigen/Core>
 #include<deque>
+#include"kffilter.h"
 
 struct alignas(float) Buff{
-  float angle;
-  float speed;
-  int timestamp;
+  double angle;
+  double speed;
+  double timestamp;
 };
 
 
 class BuffPredictor
 {
 private:
+
     //用于拟合能量机关的三角函数
     struct CURVE_FITTING_COST
     {
@@ -29,23 +31,28 @@ private:
                 const T* const params,     // 模型参数，有3维
                 T* residual ) const     // 残差
         {
-            residual[0] = T (_y) - params[0] * ceres::sin(params[1] * T (_x) + params[2]); // f(x) = a * sin(ω * t + θ)
+            residual[0] = T (_y) - params[0] * ceres::sin(params[1] * T (_x) )- params[2]; // f(x)=a*sin(ω*t)+b
             return true;
         }
         const double _x, _y;    // x,y数据
+
     };
 
-private:
-    int rotate;//大符的旋转方向 -1为逆时针 0 初始化状态 1为顺时针
-
-    double params[4];//待拟合的参数
+public:
     std::deque<Buff> history_buff;//大符队列
+    const int history_deque_len = 160;//队列长度
+    const int max_cost = 40;                                                 //TODO:回归函数最大Cost
+    const int max_timestamp=90000;
+    double params[3];//待拟合的参数
+
+
 public:
     BuffPredictor();
     ~BuffPredictor();
-    bool predict(double angel,double speed,int timestamp);
-    bool is_params_confirmed;
-    int buff_statue;//大小符模式 1为小符 2为大符
+    bool predict(Buff target);
+    Buff last_buff;
+    bool is_params_confirmed=false;
+    int buff_statue=1;//大小符模式 1为小符 2为大符
 };
 
 

@@ -18,7 +18,7 @@ EKF_CV_AWB::EKF_CV_AWB() {
     P_pre=P_in_pre;
 
     Eigen::MatrixXf Q_in = Eigen::MatrixXf(5,5);
-    Q_in<<  1,0,0,0,0,
+    Q_in<<  0.01,0,0,0,0,
             0,1,0,0,0,
             0,0,1,0,0,
             0,0,0,1,0,

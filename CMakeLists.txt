@@ -7,7 +7,7 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
 find_package(OpenCV REQUIRED)
-find_package(Ceres REQUIRED COMPONENTS EigenSparse)
+find_package(Ceres REQUIRED)
 find_package(Eigen3 REQUIRED)
 find_package(Qt5 COMPONENTS Core Gui Widgets PrintSupport REQUIRED)
 
@@ -21,7 +21,27 @@ add_executable(KF_Predict
         mainwindow.ui
         qcustomplot.h
         qcustomplot.cpp
-        KF/kf_cv_one.cpp KF/kf_cv_one.h KF/kf_ca_one.cpp KF/kf_ca_one.h EKF/ekf_cv_one.cpp EKF/ekf_cv_one.h KF/kf_cv_three.cpp KF/kf_cv_three.h predict/Buffpredict.cpp predict/Buffpredict.h EKF/ekf_cv_aw.cpp EKF/ekf_cv_aw.h EKF/ekf_cv_awb.cpp EKF/ekf_cv_awb.h)
+
+        KF/kf_cv_one.cpp
+        KF/kf_cv_one.h
+        KF/kf_ca_one.cpp
+        KF/kf_ca_one.h
+
+        EKF/ekf_cv_one.cpp
+        EKF/ekf_cv_one.h
+        KF/kf_cv_three.cpp
+        KF/kf_cv_three.h
+        EKF/ekf_cv_aw.cpp
+        EKF/ekf_cv_aw.h
+        EKF/ekf_cv_awb.cpp
+        EKF/ekf_cv_awb.h
+
+        predict/Buffpredict.cpp
+        predict/Buffpredict.h
+        predict/kffilter.cpp
+        predict/kffilter.h
+
+        )
 
 target_link_libraries(KF_Predict
         Qt5::Core
@@ -30,5 +50,6 @@ target_link_libraries(KF_Predict
         Qt5::PrintSupport
         ${Eigen3_LIBRARIES}
         ${OpenCV_LIBS}
+        ${CERES_LIBRARIES}
         )
 

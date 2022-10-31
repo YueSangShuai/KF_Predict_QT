@@ -4,6 +4,8 @@
 #include <QMainWindow>
 #include <queue>
 #include "qcustomplot.h"
+#include <opencv2/core/core.hpp>
+
 #include "KF/kf_cv_one.h"
 #include "KF/kf_ca_one.h"
 #include "KF/kf_cv_three.h"
@@ -11,12 +13,8 @@
 #include "EKF/ekf_cv_aw.h"
 #include "EKF/ekf_cv_awb.h"
 
-struct Armor{
-    int time=0;
-    float positon=0;
-    float vx=0;
-};
-
+#include"predict/Buffpredict.h"
+#include "predict/kffilter.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -47,7 +45,6 @@ private:
     void keyPressEvent(QKeyEvent*event);
     int timeid;
     void timerEvent(QTimerEvent * event);
-    std::vector<Armor> ArmorList;
 
     KF_CV_1 kalman;
     KF_CA_1 kfCa1;
@@ -57,7 +54,10 @@ private:
     EKF_CV_AW ekfCvAw;
     EKF_CV_AWB ekfCvAwb;
 
+    KF kf;
+    BuffPredictor predicter;
 
+    cv::RNG rng;                        // OpenCV随机数产生器
     Ui::MainWindow *ui;
 
     // 绘图控件的指针

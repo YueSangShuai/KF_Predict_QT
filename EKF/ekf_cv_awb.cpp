@@ -67,3 +67,7 @@ void EKF_CV_AWB::update(Eigen::MatrixXf z, double t) {
     Eigen::MatrixXf I=Eigen::MatrixXf::Identity(5,5);
     P=(I-K*JH)*P_pre;
 }
+
+void EKF_CV_AWB::setx(Eigen::MatrixXf z) {
+    z=x_pre;
+}

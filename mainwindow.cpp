@@ -103,6 +103,7 @@ void MainWindow::Show_Plot(QCustomPlot *customPlot, double num)
 
 
 //TODO：卡尔曼滤波CV模型
+
 //    kalman.predict(Ts);
 //    Eigen::MatrixXf Z_in=Eigen::MatrixXf(1,1);
 //    Z_in<<positon;
@@ -111,7 +112,8 @@ void MainWindow::Show_Plot(QCustomPlot *customPlot, double num)
 
 
 //TODO：卡尔曼滤波CA模型
-    //positon=3*(Ts*cnt)*(Ts*cnt);
+
+//positon=3*(Ts*cnt)*(Ts*cnt);
 //    kfCa1.predict(Ts);
 //    Eigen::MatrixXf Z_in=Eigen::MatrixXf(1,1);
 //    Z_in<<positon;
@@ -120,6 +122,7 @@ void MainWindow::Show_Plot(QCustomPlot *customPlot, double num)
 
 
 //TODO：扩展卡尔曼滤波CV模型
+
 //    double v=0.785*sin(3*Ts*cnt)+1.305;
 //    positon=positon+Ts*v;
 //
@@ -133,6 +136,7 @@ void MainWindow::Show_Plot(QCustomPlot *customPlot, double num)
 //    pGraph1_2->addData(cnt, 0.785*sin(ekfCvOne.get_x()(1))+1.305);
 
 //TODO：哈工程卡尔曼滤波CV模型
+
 //    double vx=3,vy=100,vz=9;
 //    postion1+=vx*Ts;
 //    postion2+=vy*Ts;
@@ -146,6 +150,7 @@ void MainWindow::Show_Plot(QCustomPlot *customPlot, double num)
 
 
 //TODO:EKF观测三角函数中的a和w
+
 //    double v=3*sin(3*Ts*cnt)+1.305;
 //    positon=positon+Ts*v;
 //    ekfCvAw.predict(Ts);
@@ -158,7 +163,8 @@ void MainWindow::Show_Plot(QCustomPlot *customPlot, double num)
 //    pGraph1_2->addData(cnt, ekfCvAw.get_x()(3)*sin(ekfCvAw.get_x()(1))+1.305);
 
 //TODO:EKF观测三角函数中的a,w,b
-//    double v=2*sin(8*Ts*cnt)+3+rng.gaussian(1);
+
+//    double v=2*sin(0.785*Ts*cnt)+1+rng.gaussian(1);
 //    positon=positon+Ts*v;
 //    ekfCvAwb.predict(Ts);
 //    Eigen::MatrixXf Z_in=Eigen::MatrixXf(1,1);
@@ -167,19 +173,43 @@ void MainWindow::Show_Plot(QCustomPlot *customPlot, double num)
 //    pGraph1_1->addData(cnt, v);
 //    pGraph1_2->addData(cnt, ekfCvAwb.get_x()(3)*sin(ekfCvAwb.get_x()(1))+ekfCvAwb.get_x()(4));
 
+
 //TODO:ceres拟合三角函数
-    double v=2*sin(1*Ts*cnt)+3+rng.gaussian(1);
-    kf.predict(Ts);
-    Eigen::MatrixXf Z_in=Eigen::MatrixXf(1,1);
-    Z_in<<v;
-    kf.update(Z_in);
-    Buff target={0,kf.get_x()(0),Ts*cnt};
-    if(predicter.predict(target)){
-        pGraph1_1->addData(cnt, v);
-        pGraph1_2->addData(cnt, predicter.params[0]*sin(predicter.params[1]*Ts*cnt)+predicter.params[2]);
-    }
 
+//    double v=2*sin(1*Ts*cnt)+3+rng.gaussian(1);
+//    kf.predict(Ts);
+//    Eigen::MatrixXf Z_in=Eigen::MatrixXf(1,1);
+//    Z_in<<v;
+//    kf.update(Z_in);
+//    Buff target={0,v,Ts*cnt};
+//    if(predicter.predict(target)){
+//        pGraph1_1->addData(cnt, v);
+//        pGraph1_2->addData(cnt, predicter.params[0]*sin(predicter.params[1]*Ts*cnt)+predicter.params[2]);
+//    }
 
+//TODO:ceres拟合系数后给拓展卡尔曼初值
+
+//    double v=2*sin(10*Ts*cnt)+1;
+//    positon=positon+Ts*v;
+//    Buff target={0,v,Ts*cnt};
+//    if(predicter.predict(target)){
+//        if(!ekfCvAwb.is_set_kf){
+//            Eigen::MatrixXf z=Eigen::MatrixXf(5,1);
+//            z<<0,0,predicter.params[1],predicter.params[0],predicter.params[2];
+//            ekfCvAwb.predict(Ts);
+//            Eigen::MatrixXf Z_in=Eigen::MatrixXf(1,1);
+//            Z_in<<positon;
+//            ekfCvAwb.update(Z_in,Ts);
+//        }else{
+//            ekfCvAwb.predict(Ts);
+//            Eigen::MatrixXf Z_in=Eigen::MatrixXf(1,1);
+//            Z_in<<positon;
+//            ekfCvAwb.update(Z_in,Ts);
+//        }
+//
+//        pGraph1_1->addData(cnt, v);
+//        pGraph1_2->addData(cnt, ekfCvAwb.get_x()(3)*sin(ekfCvAwb.get_x()(1))+ekfCvAwb.get_x()(4));
+//    }
 
 //    pGraph1_3->addData(cnt, v);
 //    pGraph1_4->addData(cnt, ekfCvAwb.get_x()(3)*sin(ekfCvAwb.get_x()(1))+ekfCvAwb.get_x()(4));

@@ -17,7 +17,10 @@ public:
     // 状态更新
     void update(Eigen::MatrixXf z, double t);
     Eigen::MatrixXf get_x(){return   x_;}
-public:
+    void setx(Eigen::MatrixXf z);
+    bool is_set_kf=false;
+private:
+
     Eigen::MatrixXf x_;
 
     Eigen::MatrixXf x_pre;

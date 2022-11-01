@@ -9,6 +9,8 @@
 #include <Eigen/Core>
 #include<deque>
 #include"kffilter.h"
+#include <opencv2/core/cvdef.h>
+
 
 struct alignas(float) Buff{
   double angle;
@@ -41,18 +43,22 @@ private:
 public:
     std::deque<Buff> history_buff;//大符队列
     const int history_deque_len = 160;//队列长度
-    const int max_cost = 40;                                                 //TODO:回归函数最大Cost
+    const int max_cost = 100;                                                 //TODO:回归函数最大Cost
     const int max_timestamp=90000;
     double params[3];//待拟合的参数
 
+    Buff last_buff;
+    bool is_params_confirmed=false;
+    int buff_statue=1;//大小符模式 1为小符 2为大符
+
+    int predict_time=3;//拟合时长
+    int del_time=0;//从拟合开始到当前拟合的时间
 
 public:
     BuffPredictor();
     ~BuffPredictor();
     bool predict(Buff target);
-    Buff last_buff;
-    bool is_params_confirmed=false;
-    int buff_statue=1;//大小符模式 1为小符 2为大符
+
 };
 
 

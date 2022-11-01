@@ -1,8 +1,6 @@
 //
 // Created by yuesang on 22-10-25.
 //
-
-#include <opencv2/core/cvdef.h>
 #include "Buffpredict.h"
 
 BuffPredictor::BuffPredictor() {
@@ -32,15 +30,29 @@ bool BuffPredictor::predict(Buff target) {
         last_buff=target;
         return false;
     }else{
-        history_buff.pop_front();
-        history_buff.push_back(target);
+        history_buff.emplace_back(target);
     }
+
+    //计算旋转方向
+    double rotate_speed_sum = 0;
+    int rotate_sign;
+    for (auto target_info : history_buff)
+        rotate_speed_sum += target_info.speed;
+
 
     if(buff_statue==1 && !is_params_confirmed){
         ceres::Problem problem;
         ceres::Solver::Options options;
         ceres::Solver::Summary summary;       // 优化信息
         double params_fitting[3] = {1, 1, 1};
+
+        //旋转方向，逆时针为正
+        if (rotate_speed_sum / fabs(rotate_speed_sum) >= 0)
+            rotate_sign = 1;
+        else
+            rotate_sign = -1;
+
+
         for (auto target_info : history_buff)
         {
             problem.AddResidualBlock (     // 向问题中添加误差项

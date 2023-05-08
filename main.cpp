@@ -3,6 +3,7 @@
 #include "mainwindow.h"
 #include <ceres/jet.h>
 
+#include "UKF/ukf_cv_one.h"
 using namespace std;
 
 int main(int argc, char *argv[]) {
@@ -11,5 +12,4 @@ int main(int argc, char *argv[]) {
     w.show();
 
     return QApplication::exec();
-
 }

@@ -30,6 +30,7 @@ bool BuffPredictor::predict(Buff target) {
         last_buff=target;
         return false;
     }else{
+        history_buff.pop_front();
         history_buff.emplace_back(target);
     }
 

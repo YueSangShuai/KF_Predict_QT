@@ -1,10 +1,8 @@
-cmake_minimum_required(VERSION 3.23)
+cmake_minimum_required(VERSION 3.17)
 project(KF_Predict)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_AUTOMOC ON)
-set(CMAKE_AUTORCC ON)
-set(CMAKE_AUTOUIC ON)
 
 find_package(OpenCV REQUIRED)
 find_package(Ceres REQUIRED)
@@ -41,6 +39,10 @@ add_executable(KF_Predict
         predict/kffilter.cpp
         predict/kffilter.h
 
+       TuoLuo/TuoLuo_EKF.cpp
+        TuoLuo/TuoLuo_EKF.h
+        tracker/tracker_KF.cpp
+        tracker/tracker_KF.h
         )
 
 target_link_libraries(KF_Predict

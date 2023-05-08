@@ -2,17 +2,25 @@
 #include "ui_mainwindow.h"
 #include "opencv2/core.hpp"
 
+
 bool flag= false;
 double positon=0;
-
 double postion1=0;
 double postion2=0;
 double postion3=0;
+double vx=3,vy=10,vz=9;
+
+float S_theta=0;
+float S_x=0;
+float S_y=0;
+float S_z=0;
+
+bool ischange= false;
+
 MainWindow::MainWindow(QWidget *parent)
         : QMainWindow(parent)
         , ui(new Ui::MainWindow)
 {
-
     ui->setupUi(this);
 
     // 给widget绘图控件，设置个别名，方便书写
@@ -82,34 +90,26 @@ void MainWindow::TimeData_Update(void)
 
     f++;
 
-
-//    kfCa1.predict(1);
-//    Eigen::MatrixXf Z_in=Eigen::MatrixXf(1,1);
-//    Z_in<<positon;
-//    kfCa1.update(Z_in,1);
-
-    //qDebug() << sin(f)*100;
-    // 将坐标数据，传递给曲线
     Show_Plot(pPlot1, positon);
 }
 
 // 曲线更新绘图
 void MainWindow::Show_Plot(QCustomPlot *customPlot, double num)
 {
-    static double cnt=0;
+    static int cnt=0;
     cnt++;
-
     double Ts=0.01;
 
-
 //TODO：卡尔曼滤波CV模型
-
+//    positon=positon+Ts*3;
 //    kalman.predict(Ts);
 //    Eigen::MatrixXf Z_in=Eigen::MatrixXf(1,1);
 //    Z_in<<positon;
 //    kalman.update(Z_in,Ts);
-
-
+//
+//        // 给曲线添加数据
+//    pGraph1_1->addData(cnt, 3);
+//    pGraph1_2->addData(cnt, kalman.get_x()(1));
 
 //TODO：卡尔曼滤波CA模型
 
@@ -137,16 +137,28 @@ void MainWindow::Show_Plot(QCustomPlot *customPlot, double num)
 
 //TODO：哈工程卡尔曼滤波CV模型
 
-//    double vx=3,vy=100,vz=9;
-//    postion1+=vx*Ts;
-//    postion2+=vy*Ts;
-//    postion3+=vz*Ts;
-//    kfCv3.predict(Ts);
-//    Eigen::MatrixXf Z_in=Eigen::MatrixXf(3,1);
-//    Z_in<<postion1,postion2,postion3;
-//
-//    kfCv3.update(Z_in);
 
+
+    postion1+=vx*Ts;
+    postion2+=vy*Ts;
+    postion3+=vz*Ts;
+
+    if(cnt%1000==0){
+        vx=(-vx);
+        vy=(-vy);
+        vz=(-vz);
+    }
+
+
+//    kfCv3.predict(Ts);
+    Eigen::MatrixXf Z_in=Eigen::MatrixXf(3,1);
+    Z_in<<postion1,postion2,postion3;
+//    kfCv3.update(Z_in);
+    pGraph1_1->addData(cnt, vy);
+    if(tracker.process(Ts,Z_in)){
+        pGraph1_2->addData(cnt, tracker.getPrediction()(3));
+    }
+    std::cout<< cnt<<"："<<tracker.tracker_state<<":"<<std::endl;
 
 
 //TODO:EKF观测三角函数中的a和w
@@ -185,6 +197,7 @@ void MainWindow::Show_Plot(QCustomPlot *customPlot, double num)
 //    if(predicter.predict(target)){
 //        pGraph1_1->addData(cnt, v);
 //        pGraph1_2->addData(cnt, predicter.params[0]*sin(predicter.params[1]*Ts*cnt)+predicter.params[2]);
+//
 //    }
 
 //TODO:ceres拟合系数后给拓展卡尔曼初值
@@ -211,8 +224,34 @@ void MainWindow::Show_Plot(QCustomPlot *customPlot, double num)
 //        pGraph1_2->addData(cnt, ekfCvAwb.get_x()(3)*sin(ekfCvAwb.get_x()(1))+ekfCvAwb.get_x()(4));
 //    }
 
+
+
 //    pGraph1_3->addData(cnt, v);
 //    pGraph1_4->addData(cnt, ekfCvAwb.get_x()(3)*sin(ekfCvAwb.get_x()(1))+ekfCvAwb.get_x()(4));
+
+//    pGraph1_1->addData(cnt, v);
+//    pGraph1_2->addData(cnt, sin(ukfCvOne.get_x()(1)*Ts));
+//TODO:小陀螺
+
+//    float theate=3.1415926/180;
+//    float r=2;
+//    float w=180/3.1415926;
+//    float x0=0;
+//    float y0=0;
+//
+//    S_theta+=w*Ts*cnt;
+//    S_x+=+r*sin(S_theta);
+//    S_y+=r*cos(S_theta);
+//    S_z+=0;
+//
+//    tuoLuoEkf.predict(Ts);
+//    Eigen::VectorXf Z_in=Eigen::VectorXf::Zero(4);
+//    Z_in<<S_x,S_y,S_z,S_theta;
+//    tuoLuoEkf.update(Z_in,Ts);
+//    pGraph1_1->addData(cnt, r);
+//    pGraph1_2->addData(cnt, tuoLuoEkf.get_x()(8));
+
+
 
     // 设置x坐标轴显示范围，使其自适应缩放x轴，x轴最大显示1000个点
     customPlot->xAxis->setRange((pGraph1_1->dataCount()>1000)?(pGraph1_1->dataCount()-1000):0, pGraph1_1->dataCount());
@@ -289,9 +328,9 @@ void MainWindow::on_checkBox_4_stateChanged(int arg1)
 }
 
 void MainWindow::keyPressEvent(QKeyEvent*event) {
-if(event->key()==Qt::Key_Q){
-    killTimer(timeid);
-}else if(event->key()==Qt::Key_S){
-    timeid= startTimer(10);
-}
+    if(event->key()==Qt::Key_Q){
+        killTimer(timeid);
+    }else if(event->key()==Qt::Key_S){
+        timeid= startTimer(1);
+    }
 }

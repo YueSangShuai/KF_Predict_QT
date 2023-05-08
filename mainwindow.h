@@ -13,8 +13,13 @@
 #include "EKF/ekf_cv_aw.h"
 #include "EKF/ekf_cv_awb.h"
 
+#include "TuoLuo/TuoLuo_EKF.h"
+
 #include"predict/Buffpredict.h"
 #include "predict/kffilter.h"
+
+#include "tracker/tracker_KF.h"
+
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -54,8 +59,12 @@ private:
     EKF_CV_AW ekfCvAw;
     EKF_CV_AWB ekfCvAwb;
 
+
     KF kf;
+    TuoLuo_EKF tuoLuoEkf;
     BuffPredictor predicter;
+
+    Tracker tracker;
 
     cv::RNG rng;                        // OpenCV随机数产生器
     Ui::MainWindow *ui;

@@ -23,13 +23,15 @@ KF_CV_3::KF_CV_3() {
     }
     H=H_in;
 
-    Eigen::MatrixXf Q_in = Eigen::MatrixXf::Identity(3,3);
-    Q=Q_in*10;
+    Eigen::MatrixXf Q_in = Eigen::MatrixXf::Zero(3,3);
+    Q_in.diagonal()<<1e-1, 1e-1, 1e-1;
+    Q=Q_in;
 
 
 
     Eigen::MatrixXf R_in=Eigen::MatrixXf::Identity(3,3);
-    R=R_in*1;
+    R_in.diagonal()<<1e-1, 1e-1, 1e-1;
+    R=R_in;
 
 }
 

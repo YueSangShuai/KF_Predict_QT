@@ -137,29 +137,29 @@ void MainWindow::Show_Plot(QCustomPlot *customPlot, double num)
 
 //TODO：哈工程卡尔曼滤波CV模型
 
-
-
-    postion1+=vx*Ts;
-    postion2+=vy*Ts;
-    postion3+=vz*Ts;
-
-    if(cnt%1000==0){
-        vx=(-vx);
-        vy=(-vy);
-        vz=(-vz);
-    }
-
-
-//    kfCv3.predict(Ts);
-    Eigen::MatrixXf Z_in=Eigen::MatrixXf(3,1);
-    Z_in<<postion1,postion2,postion3;
-//    kfCv3.update(Z_in);
-    pGraph1_1->addData(cnt, vy);
-    if(tracker.process(Ts,Z_in)){
-        pGraph1_2->addData(cnt, tracker.getPrediction()(3));
-    }
-    std::cout<< cnt<<"："<<tracker.tracker_state<<":"<<std::endl;
-
+//    postion1+=vx*Ts;
+//    postion2+=vy*Ts;
+//    postion3+=vz*Ts;
+//
+//    if(cnt%1000==0){
+////        postion1=0;
+////        postion2=0;
+////        postion3=0;
+//        vx=(-vx);
+//        vy=(-vy);
+//        vz=(-vz);
+//    }
+//
+//
+////    kfCv3.predict(Ts);
+//    Eigen::MatrixXf Z_in=Eigen::MatrixXf(3,1);
+//    Z_in<<postion1,postion2,postion3;
+////    kfCv3.update(Z_in);
+//    pGraph1_1->addData(cnt, vx);
+////    pGraph1_2->addData(cnt, kfCv3.get_x()(1));
+//    if(tracker.process(Ts,Z_in)){
+//        pGraph1_2->addData(cnt, tracker.getPrediction()(1));
+//    }
 
 //TODO:EKF观测三角函数中的a和w
 
@@ -176,7 +176,7 @@ void MainWindow::Show_Plot(QCustomPlot *customPlot, double num)
 
 //TODO:EKF观测三角函数中的a,w,b
 
-//    double v=2*sin(0.785*Ts*cnt)+1+rng.gaussian(1);
+//    double v=2*sin(0.785*Ts*cnt)+1+rng.gaussian(0.1);
 //    positon=positon+Ts*v;
 //    ekfCvAwb.predict(Ts);
 //    Eigen::MatrixXf Z_in=Eigen::MatrixXf(1,1);
@@ -188,7 +188,7 @@ void MainWindow::Show_Plot(QCustomPlot *customPlot, double num)
 
 //TODO:ceres拟合三角函数
 
-//    double v=2*sin(1*Ts*cnt)+3+rng.gaussian(1);
+//    double v=2*sin(1*Ts*cnt)+3+rng.gaussian(0.1);
 //    kf.predict(Ts);
 //    Eigen::MatrixXf Z_in=Eigen::MatrixXf(1,1);
 //    Z_in<<v;
@@ -231,25 +231,42 @@ void MainWindow::Show_Plot(QCustomPlot *customPlot, double num)
 
 //    pGraph1_1->addData(cnt, v);
 //    pGraph1_2->addData(cnt, sin(ukfCvOne.get_x()(1)*Ts));
-//TODO:小陀螺
+//TODO:小陀螺观测陀螺r
 
-//    float theate=3.1415926/180;
 //    float r=2;
-//    float w=180/3.1415926;
+//    float w=1;
 //    float x0=0;
 //    float y0=0;
 //
-//    S_theta+=w*Ts*cnt;
-//    S_x+=+r*sin(S_theta);
-//    S_y+=r*cos(S_theta);
-//    S_z+=0;
+//    S_theta=S_theta+w*Ts;
+//    S_x=x0-r*cos(S_theta);
+//    S_y=y0-r*sin(S_theta);
 //
-//    tuoLuoEkf.predict(Ts);
-//    Eigen::VectorXf Z_in=Eigen::VectorXf::Zero(4);
-//    Z_in<<S_x,S_y,S_z,S_theta;
-//    tuoLuoEkf.update(Z_in,Ts);
+//    tuoluo_one.predict(Ts);
+//    Eigen::VectorXf Z_in=Eigen::VectorXf::Zero(3);
+//    Z_in<<S_x,S_y,S_theta;
+//    tuoluo_one.update(Z_in,Ts);
+//
 //    pGraph1_1->addData(cnt, r);
-//    pGraph1_2->addData(cnt, tuoLuoEkf.get_x()(8));
+//    pGraph1_2->addData(cnt, tuoluo_one.get_x()(2));
+
+//TODO:小陀螺观测陀螺r和中心
+    float r=3;
+    float w=1;
+    float x0=2;
+    float y0=2;
+
+    S_theta=S_theta+w*Ts;
+    S_x=x0-r*cos(S_theta);
+    S_y=y0-r*sin(S_theta);
+
+    tuoluo_two.predict(Ts);
+    Eigen::VectorXf Z_in=Eigen::VectorXf::Zero(3);
+    Z_in<<S_x,S_y,S_theta;
+    tuoluo_two.update(Z_in,Ts);
+
+    pGraph1_1->addData(cnt, x0);
+    pGraph1_2->addData(cnt, tuoluo_two.get_x()(0));
 
 
 

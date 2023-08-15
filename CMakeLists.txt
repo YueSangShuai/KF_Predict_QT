@@ -7,10 +7,12 @@ set(CMAKE_AUTOMOC ON)
 find_package(OpenCV REQUIRED)
 find_package(Ceres REQUIRED)
 find_package(Eigen3 REQUIRED)
+find_package(Sophus REQUIRED)
 find_package(Qt5 COMPONENTS Core Gui Widgets PrintSupport REQUIRED)
 
 include_directories(${EIGEN3_INCLUDE_DIRS})
 include_directories(${OpenCV_INCLUDE_DIRS})
+include_directories(${Sophus_INCLUDE_DIRS})
 
 add_executable(KF_Predict
         main.cpp
@@ -43,7 +45,8 @@ add_executable(KF_Predict
         TuoLuo/TuoLuo_EKF.h
         tracker/tracker_KF.cpp
         tracker/tracker_KF.h
-        )
+
+        TuoLuo/TuoLuo_one.cpp TuoLuo/TuoLuo_one.h TuoLuo/TuoLuo_two.cpp TuoLuo/TuoLuo_two.h)
 
 target_link_libraries(KF_Predict
         Qt5::Core
@@ -53,5 +56,6 @@ target_link_libraries(KF_Predict
         ${Eigen3_LIBRARIES}
         ${OpenCV_LIBS}
         ${CERES_LIBRARIES}
+        Sophus::Sophus
         )
 

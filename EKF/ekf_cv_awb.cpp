@@ -17,12 +17,8 @@ EKF_CV_AWB::EKF_CV_AWB() {
     Eigen::MatrixXf P_in_pre = Eigen::MatrixXf::Identity(5,5);
     P_pre=P_in_pre;
 
-    Eigen::MatrixXf Q_in = Eigen::MatrixXf(5,5);
-    Q_in<<  0.01,0,0,0,0,
-            0,1,0,0,0,
-            0,0,1,0,0,
-            0,0,0,1,0,
-            0,0,0,0,1;
+    Eigen::MatrixXf Q_in = Eigen::MatrixXf::Zero(5,5);
+    Q_in.diagonal()<<1e-1, 1e-1, 1e-1, 1e-1, 1e-1;
     Q=Q_in;
 
     Eigen::MatrixXf R_in=Eigen::MatrixXf::Ones(1,1);
